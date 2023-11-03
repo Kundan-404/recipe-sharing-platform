@@ -1,7 +1,7 @@
 // server/controllers/recipeController.js
-const {Recipe} = require('../models/recipe_models');
+const {Recipe} = require('../Models/recipe_models');
 
-exports.createRecipe = (req, res) => {
+exports.createRecipe = async(req, res) => {
   const { title, ingredients, steps, cuisineType, difficultyLevel } = req.body;
 
   const newRecipe = new Recipe({
@@ -13,7 +13,7 @@ exports.createRecipe = (req, res) => {
     creator: req.user._id,
   });
 
-  newRecipe.save((err, recipe) => {
+  await newRecipe.save((err, recipe) => {
     if (err) return res.status(500).json({ message: err.message });
     res.json({ message: 'Recipe created successfully', recipe });
   });

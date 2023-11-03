@@ -1,14 +1,45 @@
-// server/middleware/authMiddleware.js
-const passport = require('passport');
+const bcrypt = require('bcrypt');
+const {User} = require('../Models/recipe_models'); // Assuming this is your User model
 
-exports.isAuthenticated = (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.status(401).json({ message: 'Unauthorized' });
 
-    req.login(user, (err) => {
-      if (err) return next(err);
-      return next();
-    });
-  })(req, res, next);
+const authenticateUser =  async (req, res, next) => {
+  console.log("Reached Success");
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    console.log(user);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    req.user = user; // Attach user to request object for further processing, if needed
+    
+    next();
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
 };
+
+const validateInput = (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Both email and password are required' });
+  }
+
+  // Add additional input validation logic as needed
+
+  next(); // Proceed to the next middleware/controller
+};
+
+
+
+module.exports = {authenticateUser,
+                  validateInput};

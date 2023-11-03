@@ -36,7 +36,7 @@ app.use(flash());
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
-// const recipeRoutes = require('./routes/recipeRoutes');
+const recipeRoutes = require('./routes/recipeRoutes');
 const reviewRoutes = require('./routes/reviewRoute');
 const userRoutes = require('./routes/userRoute');
 app.get('/', (req, res) => {
@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRoutes);
-// app.use('/recipes', recipeRoutes);
+app.use('/recipes', recipeRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/users', userRoutes);
 
