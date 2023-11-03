@@ -4,7 +4,8 @@ const { validateInput } = require('../middleware/authMiddleware');
 const { createRecipe, getAllRecipes, updateRecipe, deleteRecipe } = require('../controllers/recipeController');
 const authenticateUser = require('../middleware/authMiddleware').authenticateUser;
 
-router.post('/', authenticateUser, validateInput, createRecipe);
+// router.post('/', authenticateUser, createRecipe);
+
 router.get('/', getAllRecipes);
 // router.get('/:id', getRecipeById);
 router.put('/:id', authenticateUser, updateRecipe);

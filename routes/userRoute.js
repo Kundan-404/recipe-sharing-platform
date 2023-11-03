@@ -6,6 +6,6 @@ const { getUserProfile } = require('../controllers/userController');
 const authenticateUser = require('../middleware/authMiddleware').authenticateUser;
 
 // Get user profile
-router.get('/:userId', authenticateUser, getUserProfile);
+router.get('/userId', authenticateUser, getUserProfile);
 
 module.exports = router;

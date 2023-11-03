@@ -31,14 +31,26 @@ const userSchema = new mongoose.Schema({
   });
 
   const reviewSchema = new mongoose.Schema({
-    rating: Number,
-    comment: String,
-    createdBy: {
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5
+    },
+    comment: {
+      type: String,
+      required: true
+    },
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: true
     },
-    createdAt: Date,
-    updatedAt: Date,
+    recipe: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Recipe',
+      required: true
+    }
   });
 
   const categorySchema = new mongoose.Schema({

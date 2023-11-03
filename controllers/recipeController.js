@@ -1,7 +1,9 @@
 // server/controllers/recipeController.js
+const { json } = require('express');
 const {Recipe} = require('../Models/recipe_models');
 
 exports.createRecipe = async(req, res) => {
+  console.log("create recipe");
   const { title, ingredients, steps, cuisineType, difficultyLevel } = req.body;
 
   const newRecipe = new Recipe({
@@ -13,31 +15,38 @@ exports.createRecipe = async(req, res) => {
     creator: req.user._id,
   });
 
-  await newRecipe.save((err, recipe) => {
-    if (err) return res.status(500).json({ message: err.message });
-    res.json({ message: 'Recipe created successfully', recipe });
-  });
+  // await newRecipe.save((err, recipe) => {
+  //   if (err) return res.status(500).json({ message: err.message });
+  //   res.json({ message: 'Recipe created successfully', recipe });
+  // });
+
+  await newRecipe.save();
+  res.json({ message: 'Recipe created successfully', recipe: newRecipe });
 };
 
-exports.getAllRecipes = (req, res) => {
-  Recipe.find({}, (err, recipes) => {
-    if (err) return res.status(500).json({ message: "no recipes" });
-    res.json({ recipes });
-  });
+exports.getAllRecipes = async (req, res) => {
+  try {
+    const recipes = await Recipe.find().populate('createdBy').exec();
+    res.json(recipes);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
 };
 
-exports.updateRecipe = (req, res) => {
-  const { title, ingredients, steps, cuisineType, difficultyLevel } = req.body;
+exports.updateRecipe = async (req, res) => {
+  const { id } = req.params; // Assuming the ID is passed in the URL params
 
-  Recipe.findByIdAndUpdate(
-    req.params.id,
-    { title, ingredients, steps, cuisineType, difficultyLevel },
-    { new: true },
-    (err, recipe) => {
-      if (err) return res.status(500).json({ message: err.message });
-      res.json({ message: 'Recipe updated successfully', recipe });
+  try {
+    const updatedRecipe = await Recipe.findByIdAndUpdate(id, req.body, { new: true });
+    
+    if (!updatedRecipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
     }
-  );
+
+    res.json(updatedRecipe);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
 };
 
 exports.deleteRecipe = (req, res) => {
