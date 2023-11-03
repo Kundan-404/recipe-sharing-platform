@@ -1,0 +1,31 @@
+MEAL ={
+    "email": "john.doe@example.pk",
+    "password": "securepassword123",
+    "title": "Spaghetti Bolognese",
+    "ingredients": ["spaghetti", "ground beef", "tomato sauce"],
+    "steps": ["Cook spaghetti", "Brown ground beef", "Mix with tomato sauce"],
+    "cuisineType": "Italian",
+    "difficultyLevel": "Medium",
+    "user": "6545091220255bc40c8a1f64"
+},
+
+
+
+
+
+Review ={
+    "email": "john.doe@example.pk",
+    "password": "securepassword123",
+    "comment": "Delicious!",
+    "rating": 4,
+    "user": "6545091220255bc40c8a1f64",
+    "recipe": "65451295a59d8fc4da709934"
+}
+
+get user profile=
+{
+    
+    "email": "john.doe@example.pk",
+    "password": "securepassword123",
+    "user": "6545091220255bc40c8a1f64"
+}
