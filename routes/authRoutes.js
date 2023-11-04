@@ -4,14 +4,14 @@ const router = express.Router();
 // const passport = require('passport');
 // const { isAuthenticated } = require('../middleware/authMiddleware');
 const { login, logout, signup } = require('../controllers/authController');
-const authenticateUser = require('../middleware/authMiddleware').authenticateUser;
+const {authenticateUser, tokenVerification} = require('../middleware/authMiddleware');
 
 // Login route
 
 router.post('/login', authenticateUser, login);
 
 // Logout route
-router.get('/logout', authenticateUser, logout);
+router.get('/logout', tokenVerification, logout);
 
 // Signup route
 router.post('/signup', signup);

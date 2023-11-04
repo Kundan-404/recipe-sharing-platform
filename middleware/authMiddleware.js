@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const {User} = require('../Models/recipe_models'); // Assuming this is your User model
-
+const jwt = require('jsonwebtoken');
 
 const authenticateUser =  async (req, res, next) => {
   console.log("Reached Success");
@@ -39,7 +39,29 @@ const validateInput = (req, res, next) => {
   next(); // Proceed to the next middleware/controller
 };
 
+const tokenVerification = (req, res, next) => {
+  const token = req.header('Authorization');
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized, token not found' });
+  }
+  console.log( "found token: " +token + "\n");
+  req.token = token;
+  
+
+  jwt.verify(req.token, "SECRETKEY", (err, authData) =>{
+    if(err){
+      console.log("cant verify");
+      res.sendStatus(403);
+    }else{
+      next();
+    }
+  });
+};
+
+
 
 
 module.exports = {authenticateUser,
-                  validateInput};
+                  validateInput,
+                  tokenVerification,
+                  };

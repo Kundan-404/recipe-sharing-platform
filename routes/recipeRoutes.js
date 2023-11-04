@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const { validateInput } = require('../middleware/authMiddleware');
 const { createRecipe, getAllRecipes, updateRecipe, deleteRecipe } = require('../controllers/recipeController');
-const authenticateUser = require('../middleware/authMiddleware').authenticateUser;
+const {tokenVerification} = require('../middleware/authMiddleware');
 
-// router.post('/', authenticateUser, createRecipe);
+router.post('/', tokenVerification, createRecipe);
 
 router.get('/', getAllRecipes);
 // router.get('/:id', getRecipeById);
-router.put('/:id', authenticateUser, updateRecipe);
-router.delete('/:id', authenticateUser, deleteRecipe);
+router.put('/:id', tokenVerification, updateRecipe);
+router.delete('/:id', tokenVerification, deleteRecipe);
 
 module.exports = router;
