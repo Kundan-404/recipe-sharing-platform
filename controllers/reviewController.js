@@ -19,9 +19,19 @@ exports.createReview = async(req, res) => {
   res.json({ message: 'Review created successfully', review: newReview });
 };
 
-exports.getReviewsForRecipe = (req, res) => {
-  Review.find({ recipe: req.params.recipeId }, (err, reviews) => {
-    if (err) return res.status(500).json({ message: err.message });
+// exports.getReviewsForRecipe = (req, res) => {
+//   Review.find({ recipe: req.params.recipeId }, (err, reviews) => {
+//     if (err) return res.status(500).json({ message: err.message });
+//     res.json({ reviews });
+//   });
+// };
+
+exports.getReviewsForRecipe = async (req, res) => {
+  try {
+    const recipeId = req.params.id;
+    const reviews = await Review.find({ recipe: recipeId });
     res.json({ reviews });
-  });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
 };
