@@ -4,7 +4,7 @@ const { validateInput } = require('../middleware/authMiddleware');
 const { createRecipe, getAllRecipes, updateRecipe, deleteRecipe } = require('../controllers/recipeController');
 const {tokenVerification} = require('../middleware/authMiddleware');
 
-router.post('/', tokenVerification, createRecipe);
+router.post('/', createRecipe);
 
 router.get('/', getAllRecipes);
 // router.get('/:id', getRecipeById);

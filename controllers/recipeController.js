@@ -12,7 +12,7 @@ exports.createRecipe = async(req, res) => {
     steps,
     cuisineType,
     difficultyLevel,
-    creator: req.user._id,
+    creator: req.body.creator,
   });
 
   // await newRecipe.save((err, recipe) => {
