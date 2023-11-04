@@ -49,9 +49,22 @@ exports.updateRecipe = async (req, res) => {
   }
 };
 
-exports.deleteRecipe = (req, res) => {
-  Recipe.findByIdAndDelete(req.params.id, (err, recipe) => {
-    if (err) return res.status(500).json({ message: err.message });
-    res.json({ message: 'Recipe deleted successfully', recipe });
-  });
+// exports.deleteRecipe = (req, res) => {
+//   Recipe.findByIdAndDelete(req.params.id, (err, recipe) => {
+//     if (err) return res.status(500).json({ message: err.message });
+//     res.json({ message: 'Recipe deleted successfully', recipe });
+//   });
+// };
+
+exports.deleteRecipe = async (req, res) => {
+  try {
+    const recipe = await Recipe.findByIdAndDelete(req.params.id);
+    if (recipe) {
+      res.json({ message: 'Recipe deleted successfully', recipe });
+    } else {
+      res.status(404).json({ message: 'Recipe not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
 };
